@@ -142,7 +142,15 @@ theorem eml_L_exp_eq_sub {x y : ℝ} (hx : x ≠ 0) :
     eml (L (x : ℂ)) (Complex.exp (y : ℂ)) = ((x - y : ℝ) : ℂ)
 ```
 
-**Note on $x = 0$ extension:** The $-\infty$ extension is informal. In a Lean formalization we either (i) treat $-x = \mathrm{eml}(L(0), \exp(x))$ as a separate identity proved using Mathlib's `Complex.log 0 = 0` totalization (which makes $L(0) = \mathrm{eml}(1, \exp(\mathrm{eml}(1, 0))) = \mathrm{eml}(1, \exp(e)) = e - e = 0$ — *not* $-\infty$, so the SI's extension does not Lean-verify in the obvious way), or (ii) construct $-x$ via a different witness. **Option (ii) is cleaner.** The standard substitution is: $-x = 0 - x$ where $0$ is constructed as $L(1)$ (Corollary 4, item 1) and subtraction is Lemma 3 with $x$ replaced by $0$ — but this requires $0 \neq 0$, contradiction. So we need a different witness for negation that doesn't go through Lemma 3 at $x=0$. **TODO (Phase 3 decision):** find a clean Lean-friendly witness for $-x$ using Lemmas 1, 2, 3 only. Candidate: $-x = \mathrm{eml}(\mathrm{Log}(1), x)$ won't work because $\mathrm{Log}(1) = 0$ gives $\exp(0) - \mathrm{Log}(x) = 1 - \mathrm{Log}(x) \neq -x$. **This is the first place where the SI's informal $-\infty$ extension creates a real obligation for the formalization.** It needs to be resolved before Phase 3.
+**Note on $x = 0$ extension.** The SI's $L(0) = -\infty$, $\exp(-\infty) = 0$ extension is informal and does *not* Lean-verify under Mathlib's `Complex.log 0 = 0` totalization (which forces $L(0) = e - e = 0$, not $-\infty$). The substitution $-x = 0 - x$ via Lemma 3 also fails: it would require $0 \neq 0$.
+
+**Recommended Phase 3 witness.** The SI itself provides a clean alternative in the "Note on use of extended reals" footnote at the end of §2.5: for $z \in \mathbb{R}$ (or, more generally, where each step is defined),
+$$-z \;=\; 1 - (e - ((e - 1) - z)).$$
+**Verification.** Let $a := (e-1) - z$; then $e - a = e - (e-1) + z = 1 + z$; then $1 - (1+z) = -z$. ✓
+
+**Why this works for Lean.** Each of the three subtractions, applied via Lemma 3, has a *strictly positive* first argument: $e-1 > 0$ for the innermost, $e > 0$ for the middle, and $1 > 0$ for the outermost. Lemma 3 requires only $\text{(first arg)} \neq 0$, which is satisfied a fortiori. No appeal to $L(0)$ is needed, and on its first-argument inputs $L$ acts as $\log$ throughout (Lemma 2(a)), so the witness lives entirely on the "easy" branch.
+
+**Status.** This is the recommended Phase 3 construction. Claude Code is not bound to it — a shorter witness may exist, and the search procedure may surface alternatives — but the formalization is no longer blocked on resolving the negation question. See §8, Open Issue 1.
 
 ---
 
@@ -284,7 +292,7 @@ Explicitly **not** part of any phase:
 
 ## 8. Open issues / TODOs
 
-1. **Negation witness.** The SI's $L(0) = -\infty$ extension does not Lean-verify cleanly under Mathlib's `Complex.log 0 = 0` totalization. Phase 3 must establish a clean $-x$ witness using only Lemmas 1–3. *(See note under Lemma 3.)*
+1. **Negation witness.** ~~Open.~~ **Resolved (recommended construction).** Use the SI's clean-math witness $-z = 1 - (e - ((e-1) - z))$, which expresses negation as three nested Lemma-3 subtractions whose first arguments are all strictly positive (and in particular nonzero), avoiding the $L(0)$ totalization issue entirely. See expanded note under Lemma 3. Phase 3 may adopt this directly or substitute a shorter witness if one is found.
 2. **Multiplication domain.** SI's $x \cdot y = \exp(L(x) + L(y))$ requires $x, y > 0$. Phase 3 decision: positive-reals only, or extend to all reals via case work, or find an alternative witness.
 3. **$\sinh$ alternative witness.** Step 22 of Table S2 uses $\sinh x = \mathrm{eml}(x, \exp(\cosh x))$. Verify this is correct (it claims $e^x - \cosh x = \sinh x$, which checks: $e^x - (e^x + e^{-x})/2 = (e^x - e^{-x})/2 = \sinh x$. ✓). Decide whether to formalize this witness or the textbook one.
-4. **Phase 0 must verify** the exact Mathlib lemma names: `Complex.log_one`, `Complex.log_neg_one`, `Complex.exp_log`, `Complex.log_exp`, `Complex.exp_sub`, plus the $e^{-2\pi i} = 1$ fact (likely `Complex.exp_neg_two_pi_mul_I` or via `Complex.exp_int_mul_two_pi_mul_I`). Until these are confirmed, all Lean stubs use them as conjectural API references.
+4. **Phase 0 must verify** the exact Mathlib lemma names: `Complex.log_one`, `Complex.log_neg_one`, `Complex.exp_log`, `Complex.log_exp`, `Complex.exp_sub`, plus the $e^{2\pi i} = 1$ fact (most likely `Complex.exp_two_pi_mul_I`, with the $n = -1$ specialization derivable via `Complex.exp_neg` or `Complex.exp_int_mul_two_pi_mul_I`). Until these are confirmed, all Lean stubs use them as conjectural API references.
