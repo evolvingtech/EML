@@ -16,6 +16,8 @@ limitations under the License.
 This formalization is based on:
   Andrzej Odrzywołek, "All elementary functions from a single operator,"
   arXiv:2603.21852v2 (March 2026).
-The original paper and its Supplementary Information are included in
-the papers/ directory for reference; their copyright belongs to their
-respective authors and is unaffected by this license.
+  Available at: https://arxiv.org/abs/2603.21852
+
+The paper itself is not redistributed in this repository; please obtain
+it from the arXiv link above. Copyright in the paper belongs to its
+author and is unaffected by this license.

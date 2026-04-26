@@ -28,3 +28,7 @@ CLAUDE.md
 # GitHub Actions workflows — disabled by default to avoid runaway CI billing.
 # To enable, remove this line and add specific workflow files explicitly.
 .github/workflows/
+
+# Reference papers (Odrzywołek's work, included for local reference only).
+# Not redistributed in this repo; see README.md for citation and arXiv link.
+papers/
