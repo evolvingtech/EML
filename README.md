@@ -57,9 +57,7 @@ EML/
 │   └── Transcendentals/         # full transcendental function bootstrap
 ├── docs/
 │   ├── SPEC.md                  # canonical specification
-│   ├── MATHLIB_RECON.md         # Mathlib API reconnaissance report
-│   ├── PROJECT_ORIENTATION.md   # high-level orientation
-│   └── PHASE_*.md               # per-phase implementation briefs
+│   └── MATHLIB_RECON.md         # Mathlib API reconnaissance report
 ├── lakefile.toml                # Lake build configuration
 └── lean-toolchain               # pinned Lean version
 ```
