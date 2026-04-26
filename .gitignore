@@ -20,3 +20,11 @@ __pycache__/
 *.swp
 *.swo
 *~
+
+# Private working notes (tracked in ~/Documents/Data/ETC/Dev/AI/ai-project-notes,
+# symlinked here for Claude Code auto-discovery, never pushed publicly)
+CLAUDE.md
+
+# GitHub Actions workflows — disabled by default to avoid runaway CI billing.
+# To enable, remove this line and add specific workflow files explicitly.
+.github/workflows/
