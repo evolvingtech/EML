@@ -32,3 +32,8 @@ CLAUDE.md
 # Reference papers (Odrzywołek's work, included for local reference only).
 # Not redistributed in this repo; see README.md for citation and arXiv link.
 papers/
+
+# Private working notes for this project (phase briefs, project orientation,
+# etc.) — tracked in ~/Documents/Data/ETC/Dev/AI/ai-project-notes/EML/docs_private,
+# symlinked here for Claude Code access, never pushed publicly.
+docs_private
